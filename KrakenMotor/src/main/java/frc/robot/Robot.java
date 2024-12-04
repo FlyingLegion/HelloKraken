@@ -107,7 +107,7 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (Stick0.getLeftY() > deadband || Stick0.getLeftY() < deadband - 2*deadband) {
+    if (Stick0.getLeftY() > deadband || Stick0.getLeftY() < -deadband) {
       m_talonMotor.set(Stick0.getLeftY());
     } else if (Stick0.getRightY() > deadband || Stick0.getRightY() < -deadband) {
       m_talonMotor.set(Stick0.getRightY());
@@ -115,6 +115,7 @@ public class Robot extends TimedRobot {
       m_talonMotor.set(0);
     }
   }
+
 
   /** This function is called once when the robot is disabled. */
   @Override
