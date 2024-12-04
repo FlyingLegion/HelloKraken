@@ -40,7 +40,7 @@ public class Robot extends TimedRobot {
 
   TalonFX m_talonMotor = new TalonFX(0, "rio");
   XboxController Stick0 = new XboxController(1);
-
+  double deadband;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -51,6 +51,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    deadband = 0.1;
   }
 
 
@@ -106,13 +107,14 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (Stick0.getLeftY() > 0) {
+    if (Stick0.getLeftY() > deadband || Stick0.getLeftY() < deadband - 2*deadband) {
       m_talonMotor.set(Stick0.getLeftY());
-  } else {
+    } else if (Stick0.getRightY() > deadband || Stick0.getRightY() < -deadband) {
+      m_talonMotor.set(Stick0.getRightY());
+    } else {
       m_talonMotor.set(0);
     }
   }
-
 
   /** This function is called once when the robot is disabled. */
   @Override
